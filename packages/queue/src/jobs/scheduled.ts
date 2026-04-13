@@ -1,5 +1,5 @@
-import { boss } from "../boss";
-import { JOB_NAMES, type ScheduledJobPayload } from "@repo/types";
+import { boss } from '../boss'
+import { JOB_NAMES, type ScheduledJobPayload } from '@repo/types'
 
 export async function dispatchScheduledJob(
   payload: ScheduledJobPayload,
@@ -8,5 +8,5 @@ export async function dispatchScheduledJob(
     retryLimit: 2,
     retryDelay: 60,
     retryBackoff: true,
-  });
+  })
 }

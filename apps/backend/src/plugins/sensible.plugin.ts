@@ -1,1 +1,1 @@
-export { default as sensiblePlugin } from "@fastify/sensible";
+export { default as sensiblePlugin } from '@fastify/sensible'

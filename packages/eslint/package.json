@@ -1,11 +1,9 @@
 {
-  "name": "@repo/types",
+  "name": "@repo/eslint-config",
   "version": "1.0.0",
-  "description": "Shared types for the monorepo",
+  "description": "Shared ESLint configuration for the monorepo",
   "type": "module",
-  "private": true,
   "main": "./src/index.ts",
-  "types": "./src/index.ts",
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -14,14 +12,18 @@
     }
   },
   "scripts": {
-    "build": "tsc",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "typescript-eslint": "^8.0.0",
+    "@stylistic/eslint-plugin": "^2.0.0"
+  },
+  "peerDependencies": {
+    "eslint": "^9.0.0"
+  },
   "devDependencies": {
-    "typescript": "^6.0.2"
+    "eslint": "^9.0.0",
+    "typescript": "^6.0.0"
   }
 }

@@ -1,26 +1,26 @@
 export const idParamsSchema = {
-  type: "object",
+  type: 'object',
   properties: {
-    id: { type: "string" },
+    id: { type: 'string' },
   },
-  required: ["id"],
-} as const;
+  required: ['id'],
+} as const
 
 export const createUserBodySchema = {
-  type: "object",
+  type: 'object',
   properties: {
-    name: { type: "string" },
-    email: { type: "string", format: "email" },
+    name: { type: 'string' },
+    email: { type: 'string', format: 'email' },
   },
-  required: ["name", "email"],
+  required: ['name', 'email'],
   additionalProperties: false,
-} as const;
+} as const
 
 export const updateUserBodySchema = {
-  type: "object",
+  type: 'object',
   properties: {
-    name: { type: "string" },
-    email: { type: "string", format: "email" },
+    name: { type: 'string' },
+    email: { type: 'string', format: 'email' },
   },
   additionalProperties: false,
-} as const;
+} as const

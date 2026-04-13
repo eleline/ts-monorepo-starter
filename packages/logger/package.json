@@ -11,7 +11,10 @@
       "default": "./index.ts"
     }
   },
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint src index.ts",
+    "lint:fix": "eslint src index.ts --fix"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

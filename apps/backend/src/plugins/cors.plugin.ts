@@ -1,1 +1,1 @@
-export { default as corsPlugin } from "@fastify/cors";
+export { default as corsPlugin } from '@fastify/cors'

@@ -5,6 +5,7 @@
     { "path": "./packages/database" },
     { "path": "./packages/queue" },
     { "path": "./packages/logger" },
+    { "path": "./packages/eslint" },
     { "path": "./apps/backend" },
     { "path": "./apps/worker" }
   ]
