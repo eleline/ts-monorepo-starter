@@ -1,0 +1,26 @@
+{
+  "name": "@repo/queue",
+  "version": "1.0.0",
+  "description": "Shared pg-boss queue layer",
+  "type": "module",
+  "main": "./index.ts",
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "import": "./index.ts",
+      "default": "./index.ts"
+    }
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@repo/types": "workspace:*",
+    "pg-boss": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^6.0.0"
+  }
+}
