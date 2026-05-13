@@ -3,5 +3,5 @@ import { base } from '@repo/eslint-config'
 
 export default defineConfig([
   { ignores: ['**/dist/**', '**/generated/**', 'apps/frontend/**', 'apps/batch/**', 'eslint.config.ts'] },
-  ...base(),
+  ...base({ tsconfigRootDir: import.meta.dirname }),
 ])

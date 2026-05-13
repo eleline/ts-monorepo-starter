@@ -3,7 +3,11 @@ import stylistic from '@stylistic/eslint-plugin'
 import type { Linter } from 'eslint'
 import { globalRules } from '../rules/global'
 
-export function base(): Linter.Config[] {
+interface BaseOptions {
+  tsconfigRootDir: string
+}
+
+export function base(options: BaseOptions): Linter.Config[] {
   return [
     ...tseslint.configs.recommendedTypeChecked,
     stylistic.configs.customize({
@@ -16,6 +20,7 @@ export function base(): Linter.Config[] {
     {
       languageOptions: {
         parserOptions: {
+          tsconfigRootDir: options.tsconfigRootDir,
           projectService: {
             allowDefaultProject: ['*.config.ts', '*.config.mts'],
           },

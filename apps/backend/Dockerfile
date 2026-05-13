@@ -7,6 +7,7 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY packages/database/package.json packages/database/
 COPY packages/types/package.json packages/types/
 COPY packages/queue/package.json packages/queue/
+COPY packages/logger/package.json packages/logger/
 COPY apps/backend/package.json apps/backend/
 
 # ── dev: hot-reload with tsx watch ────────────────────────────────
@@ -23,6 +24,8 @@ FROM base AS builder
 RUN pnpm install --frozen-lockfile
 COPY packages/ packages/
 COPY apps/backend/ apps/backend/
+WORKDIR /app
+RUN pnpm --filter database db:generate
 WORKDIR /app/apps/backend
 RUN pnpm build
 
@@ -35,10 +38,12 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY packages/database/package.json packages/database/
 COPY packages/types/package.json packages/types/
 COPY packages/queue/package.json packages/queue/
+COPY packages/logger/package.json packages/logger/
 COPY apps/backend/package.json apps/backend/
 
 RUN pnpm install --frozen-lockfile --prod
 
+COPY --from=builder /app/packages/database/generated packages/database/generated
 COPY --from=builder /app/apps/backend/dist apps/backend/dist
 COPY packages/ packages/
 

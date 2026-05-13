@@ -1,4 +1,23 @@
 services:
+  migrate:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+      target: ${BUILD_TARGET:-dev}
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    command: ["sh", "-c", "pnpm --filter database db:generate && pnpm --filter database db:deploy"]
+    volumes:
+      - ./packages:/app/packages
+    depends_on:
+      pgsql:
+        condition: service_healthy
+    networks:
+      - backend
+    restart: "no"
+
   worker:
     build:
       context: .
@@ -16,6 +35,8 @@ services:
     depends_on:
       pgsql:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     networks:
       - backend
 
@@ -40,6 +61,8 @@ services:
     depends_on:
       pgsql:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     networks:
       - backend
 

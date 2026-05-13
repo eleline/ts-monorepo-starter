@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
+    { "path": "./tsconfig.config.json" },
     { "path": "./packages/types" },
     { "path": "./packages/database" },
     { "path": "./packages/queue" },
