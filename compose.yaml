@@ -10,7 +10,7 @@ services:
       DATABASE_URL: ${DATABASE_URL}
     command: ["sh", "-c", "pnpm --filter database db:generate && pnpm --filter database db:deploy"]
     volumes:
-      - ./packages:/app/packages
+      - prisma-generated:/app/packages/database/generated
     depends_on:
       pgsql:
         condition: service_healthy
@@ -32,6 +32,7 @@ services:
     volumes:
       - ./apps/worker/src:/app/apps/worker/src
       - ./packages:/app/packages
+      - prisma-generated:/app/packages/database/generated
     depends_on:
       pgsql:
         condition: service_healthy
@@ -58,6 +59,7 @@ services:
       # Mount source for hot-reload in dev; ignored in prod via BUILD_TARGET=prod
       - ./apps/backend/src:/app/apps/backend/src
       - ./packages:/app/packages
+      - prisma-generated:/app/packages/database/generated
     depends_on:
       pgsql:
         condition: service_healthy
@@ -94,3 +96,4 @@ networks:
 
 volumes:
   pgsql-data:
+  prisma-generated:

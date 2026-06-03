@@ -12,7 +12,7 @@ COPY apps/backend/package.json apps/backend/
 
 # ── dev: hot-reload with tsx watch ────────────────────────────────
 FROM base AS dev
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --shamefully-hoist
 COPY packages/ packages/
 COPY apps/backend/ apps/backend/
 WORKDIR /app/apps/backend
@@ -21,7 +21,7 @@ CMD ["pnpm", "dev"]
 
 # ── builder: compile TypeScript ────────────────────────────────────
 FROM base AS builder
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --shamefully-hoist
 COPY packages/ packages/
 COPY apps/backend/ apps/backend/
 WORKDIR /app
