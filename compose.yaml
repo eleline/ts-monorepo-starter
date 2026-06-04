@@ -1,0 +1,97 @@
+x-app-base: &app-base
+  env_file: .env
+  environment:
+    DATABASE_URL: ${DATABASE_URL}
+    NODE_ENV: ${NODE_ENV:-development}
+    PORT: ${PORT:-3000}
+  depends_on:
+    postgres:
+      condition: service_healthy
+  restart: unless-stopped
+  volumes:
+    - ./packages/database/prisma:/app/packages/database/prisma
+
+x-app-build: &app-build
+  context: .
+  target: dev
+
+services:
+  postgres:
+    image: postgres:${POSTGRES_VERSION:-18}
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      default:
+        aliases:
+          - pgsql
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-mydb}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-mydb}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  backend:
+    <<: *app-base
+    build:
+      <<: *app-build
+      dockerfile: apps/backend/Dockerfile
+    command: ["pnpm", "--filter", "backend", "dev"]
+    ports:
+      - "${PORT:-3000}:3000"
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/backend/src
+          target: /app/apps/backend/src
+          ignore:
+            - node_modules/
+        - action: sync
+          path: ./packages
+          target: /app/packages
+          ignore:
+            - node_modules/
+            - database/prisma/
+        - action: rebuild
+          path: ./pnpm-lock.yaml
+        - action: rebuild
+          path: ./pnpm-workspace.yaml
+
+  worker:
+    <<: *app-base
+    build:
+      <<: *app-build
+      dockerfile: apps/worker/Dockerfile
+    command: ["pnpm", "--filter", "worker", "dev"]
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/worker/src
+          target: /app/apps/worker/src
+          ignore:
+            - node_modules/
+        - action: sync
+          path: ./packages
+          target: /app/packages
+          ignore:
+            - node_modules/
+            - database/prisma/
+        - action: rebuild
+          path: ./pnpm-lock.yaml
+        - action: rebuild
+          path: ./pnpm-workspace.yaml
+
+volumes:
+  pgdata:
